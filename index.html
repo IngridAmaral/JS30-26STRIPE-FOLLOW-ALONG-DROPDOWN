@@ -227,7 +227,9 @@
 
     function handleEnter () {
         this.classList.add('trigger-enter');
-        setTimeout(() => this.classList.add('trigger-enter-active'), 150) //must use an arrow function when using this
+        setTimeout(() => this.classList.contains('trigger-enter') //makes sure that the content will not show without the bg, if it's true the next will run
+         && this.classList.add('trigger-enter-active'), 150) //must use an arrow function when using this
+
         background.classList.add('open'); 
 
         const dropdown = this.querySelector('.dropdown');
@@ -237,8 +239,14 @@
 
         const coords = {
             height: dropdownCoords.height,
-            width: dropdownCoords.width
+            width: dropdownCoords.width,
+            top: dropdownCoords.top - navCoords.top, //must consider if something gets added above the nav 
+            left: dropdownCoords.left - navCoords.left
         };
+
+        background.style.setProperty('width', `${coords.width}px`); //changes the size of the white bg
+        background.style.setProperty('height', `${coords.height}px`);
+        background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`)
     }
 
     function handleLeave () {
